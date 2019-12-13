@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cmazxy.github.io/</id>
-    <title>王小勇2022</title>
-    <updated>2019-12-13T07:33:15.938Z</updated>
+    <title>王小勇</title>
+    <updated>2019-12-13T07:53:54.180Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://cmazxy.github.io/"/>
     <link rel="self" href="https://cmazxy.github.io//atom.xml"/>
-    <subtitle>我不赌我一定会成功，我只赌我不后悔</subtitle>
+    <subtitle>珍惜眼前人</subtitle>
     <logo>https://cmazxy.github.io//images/avatar.png</logo>
     <icon>https://cmazxy.github.io//favicon.ico</icon>
-    <rights>All rights reserved 2019, 王小勇2022</rights>
+    <rights>All rights reserved 2019, 王小勇</rights>
     <entry>
         <title type="html"><![CDATA[生活日记]]></title>
         <id>https://cmazxy.github.io//post/life</id>
@@ -152,7 +152,7 @@ gitlab-ctl restart #重启gitlab
 这里我们只需要重启gitlab就可以，别去刷新gitlab的配置文件
 </code></pre>
 <h3 id="附上成功的图片">附上成功的图片</h3>
-<figure data-type="image" tabindex="1"><img src="https://user-gold-cdn.xitu.io/2019/6/2/16b17de0c6be6f72?w=1505&amp;h=987&amp;f=png&amp;s=50473" alt=""></figure>
+<figure data-type="image" tabindex="1"><img src="https://cmazxy.github.io//post-images/1576223445813.png" alt=""></figure>
 <h2 id="gitlab汉化">gitlab汉化</h2>
 <ol>
 <li>停止gitlab服务</li>
@@ -191,7 +191,7 @@ patch -d /opt/gitlab/embedded/service/gitlab-rails -p1 &lt; 10.0.0-zh.diff
 <pre><code class="language-js">gitlab-ctl start
 </code></pre>
 <h3 id="附上汉化成功的图片">附上汉化成功的图片</h3>
-<figure data-type="image" tabindex="2"><img src="https://user-gold-cdn.xitu.io/2019/6/2/16b1851f55039605?w=1900&amp;h=912&amp;f=png&amp;s=68637" alt=""></figure>
+<figure data-type="image" tabindex="2"><img src="https://cmazxy.github.io//post-images/1576223473167.png" alt=""></figure>
 ]]></content>
     </entry>
 </feed>
