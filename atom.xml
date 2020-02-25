@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cmazxy.github.io/</id>
-    <title>王小勇</title>
-    <updated>2019-12-13T09:58:24.296Z</updated>
+    <title>积少成多</title>
+    <updated>2020-02-25T06:58:53.405Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://cmazxy.github.io/"/>
     <link rel="self" href="https://cmazxy.github.io//atom.xml"/>
-    <subtitle>珍惜眼前人</subtitle>
+    <subtitle>不积跬步 无以至千里 不积小流 无以成江海</subtitle>
     <logo>https://cmazxy.github.io//images/avatar.png</logo>
     <icon>https://cmazxy.github.io//favicon.ico</icon>
-    <rights>All rights reserved 2019, 王小勇</rights>
+    <rights>All rights reserved 2020, 积少成多</rights>
     <entry>
         <title type="html"><![CDATA[搭建一个私人的gitlab站点]]></title>
         <id>https://cmazxy.github.io//post/ge-ren-gitlab-de-an-zhuang-pei-zhi-han-hua</id>
