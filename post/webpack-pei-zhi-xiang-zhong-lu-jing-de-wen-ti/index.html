@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>webpack配置项中路径的问题 | Cmaz</title>
+<meta name="referrer" content="no-referrer"/>
+<meta name="description" content="我还是从前那个少年">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://cmazxy.github.io//favicon.ico?v=1587968009883">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cmazxy.github.io//styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://cmazxy.github.io/">
+        <img src="https://cmazxy.github.io//images/avatar.png?v=1587968009883" class="site-logo">
+        <h1 class="site-title">Cmaz</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      我还是从前那个少年
+    </div>
+    <div class="site-footer">
+      By <a href="https://cmazxy.github.io/post/about/">@Cmaz</a> | <a class="rss" href="https://cmazxy.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">webpack配置项中路径的问题</h2>
+            <div class="post-date">2020-04-27</div>
+            
+            <div class="post-content">
+              <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">极客时间《TypeScript开发实战》学习笔记</p>
+</blockquote>
+<h2 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 22px;"><span class="prefix" style="display: none;"></span><span class="content">webpack配置项路径</span><span class="suffix"></span></h2>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;">在配置文件中，文件的引入可以使用相对路径，这个没有问题。
+比如vue cli2中
+build/目录</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;"><img src="https://user-gold-cdn.xitu.io/2019/11/19/16e814ea5d23b962?w=274&amp;h=329&amp;f=png&amp;s=16753" alt style="display: block; margin: 0 auto; max-width: 100%;">
+/build/webpack.config.js中可以使用相对路径引入其他文件</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;merge&nbsp;=&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">require</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'webpack-merge'</span>)<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;baseConfig&nbsp;=&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">require</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./webpack.base.config'</span>)<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;devConfig&nbsp;=&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">require</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./webpack.dev.config'</span>)<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;proConfig&nbsp;=&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">require</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./webpack.pro.config'</span>)<br></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;">但是配置项中就不能使用相对路径了，而要使用绝对路径。<br>
+因为相对的不是你期望的当前脚本所在目录，而是相对于你在哪个目录执行的webpack命令，就是cli里常说的current working directory。<br> 所以如果当你执行命令的目录和webpack.config.js在同一个目录时，没有任何问题。
+我们是通过npm或者yarn在项目根目录执行的命令（因为package.json在根目录）所以build目录中配置文件中配置项的路径是在项目根目录开始计算的，所以不能直接使用相对路径。要使用相对路径也要清楚是从根目录开始算的，而不是配置文件当前所在的目录。最好是使用绝对路径，使用nodejs的path模块可以轻松配置绝对路径</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">module</span>.exports&nbsp;=&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">entry</span>:&nbsp;path.join(__dirname,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./../src/app.ts'</span>),<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">output</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">filename</span>:&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'app.js'</span><br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">resolve</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">extensions</span>:&nbsp;[<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'.js'</span>,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'.ts'</span>,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'.tsx'</span>]<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">module</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">rules</span>:&nbsp;[<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">test</span>:&nbsp;<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/\.tsx?$/i</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">use</span>:&nbsp;[{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">loader</span>:&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'ts-loader'</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">exclude</span>:&nbsp;<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/node_modules/</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;]<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">plugins</span>:&nbsp;[<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">new</span>&nbsp;HtmlWebpackPlugin({<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">template</span>:&nbsp;path.join(__dirname,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./../public/index.html'</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;})<br>&nbsp;&nbsp;]<br>}<br></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;">path.join()是在当前使用它的文件的绝对路径上和第二个参数的相对路径拼在一起形成一个绝对路径</p>
+</section>
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://cmazxy.github.io/tag/ssrdRb2bS/" class="tag">
+                    typescript
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://cmazxy.github.io/post/12/">
+                  <h3 class="post-title">
+                    gitlab-runner的安装与注册
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '2aa77d2272e1e3bb0303',
+        clientSecret: '5b398ba25580e35d04907a9bac95b520cf2e1457',
+        repo: 'cmazxy.github.io',
+        owner: 'cmazxy',
+        admin: ['cmazxy'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
