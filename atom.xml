@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://cmazxy.github.io/</id>
+    <id>https://cmazxy.com</id>
     <title>Cmaz</title>
-    <updated>2020-04-27T06:14:34.373Z</updated>
+    <updated>2020-04-27T06:15:06.558Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://cmazxy.github.io/"/>
-    <link rel="self" href="https://cmazxy.github.io/atom.xml"/>
+    <link rel="alternate" href="https://cmazxy.com"/>
+    <link rel="self" href="https://cmazxy.com/atom.xml"/>
     <subtitle>我还是从前那个少年</subtitle>
-    <logo>https://cmazxy.github.io/images/avatar.png</logo>
-    <icon>https://cmazxy.github.io/favicon.ico</icon>
+    <logo>https://cmazxy.com/images/avatar.png</logo>
+    <icon>https://cmazxy.com/favicon.ico</icon>
     <rights>All rights reserved 2020, Cmaz</rights>
     <entry>
         <title type="html"><![CDATA[TypeScript中的函数]]></title>
-        <id>https://cmazxy.github.io/post/typescript-zhong-de-han-shu/</id>
-        <link href="https://cmazxy.github.io/post/typescript-zhong-de-han-shu/">
+        <id>https://cmazxy.com/post/typescript-zhong-de-han-shu/</id>
+        <link href="https://cmazxy.com/post/typescript-zhong-de-han-shu/">
         </link>
         <updated>2020-04-27T06:09:24.000Z</updated>
         <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
@@ -47,8 +47,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[TypeScript中的对象类型接口]]></title>
-        <id>https://cmazxy.github.io/post/typescript-zhong-de-dui-xiang-lei-xing-jie-kou/</id>
-        <link href="https://cmazxy.github.io/post/typescript-zhong-de-dui-xiang-lei-xing-jie-kou/">
+        <id>https://cmazxy.com/post/typescript-zhong-de-dui-xiang-lei-xing-jie-kou/</id>
+        <link href="https://cmazxy.com/post/typescript-zhong-de-dui-xiang-lei-xing-jie-kou/">
         </link>
         <updated>2020-04-27T06:08:29.000Z</updated>
         <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
@@ -85,8 +85,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[TypeScript中的数据类型（二）]]></title>
-        <id>https://cmazxy.github.io/post/typescript-zhong-de-shu-ju-lei-xing-er/</id>
-        <link href="https://cmazxy.github.io/post/typescript-zhong-de-shu-ju-lei-xing-er/">
+        <id>https://cmazxy.com/post/typescript-zhong-de-shu-ju-lei-xing-er/</id>
+        <link href="https://cmazxy.com/post/typescript-zhong-de-shu-ju-lei-xing-er/">
         </link>
         <updated>2020-04-27T06:07:41.000Z</updated>
         <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
@@ -121,8 +121,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[TypeScript中的数据类型（一）]]></title>
-        <id>https://cmazxy.github.io/post/typescript-zhong-de-shu-ju-lei-xing-yi/</id>
-        <link href="https://cmazxy.github.io/post/typescript-zhong-de-shu-ju-lei-xing-yi/">
+        <id>https://cmazxy.com/post/typescript-zhong-de-shu-ju-lei-xing-yi/</id>
+        <link href="https://cmazxy.com/post/typescript-zhong-de-shu-ju-lei-xing-yi/">
         </link>
         <updated>2020-04-27T06:05:41.000Z</updated>
         <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
@@ -177,8 +177,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[webpack配置项中路径的问题]]></title>
-        <id>https://cmazxy.github.io/post/webpack-pei-zhi-xiang-zhong-lu-jing-de-wen-ti/</id>
-        <link href="https://cmazxy.github.io/post/webpack-pei-zhi-xiang-zhong-lu-jing-de-wen-ti/">
+        <id>https://cmazxy.com/post/webpack-pei-zhi-xiang-zhong-lu-jing-de-wen-ti/</id>
+        <link href="https://cmazxy.com/post/webpack-pei-zhi-xiang-zhong-lu-jing-de-wen-ti/">
         </link>
         <updated>2020-04-27T06:04:16.000Z</updated>
         <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
@@ -200,8 +200,8 @@ build/目录</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[gitlab-runner的安装与注册]]></title>
-        <id>https://cmazxy.github.io/post/12/</id>
-        <link href="https://cmazxy.github.io/post/12/">
+        <id>https://cmazxy.com/post/12/</id>
+        <link href="https://cmazxy.com/post/12/">
         </link>
         <updated>2020-04-26T02:34:36.000Z</updated>
         <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
@@ -273,8 +273,8 @@ build/目录</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[gitlab>安装>配置>汉化]]></title>
-        <id>https://cmazxy.github.io/post/gitlab-de-an-zhuang-pei-zhi-han-hua/</id>
-        <link href="https://cmazxy.github.io/post/gitlab-de-an-zhuang-pei-zhi-han-hua/">
+        <id>https://cmazxy.com/post/gitlab-de-an-zhuang-pei-zhi-han-hua/</id>
+        <link href="https://cmazxy.com/post/gitlab-de-an-zhuang-pei-zhi-han-hua/">
         </link>
         <updated>2020-04-22T01:57:49.000Z</updated>
         <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><h2 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; font-weight: bold; color: black; border-bottom: 2px solid rgb(239, 112, 96); font-size: 1.3em;"><span class="prefix" style="display: none;"></span><span class="content" style="display: inline-block; font-weight: bold; background: rgb(239, 112, 96); color: #ffffff; padding: 3px 10px 1px; border-top-right-radius: 3px; border-top-left-radius: 3px; margin-right: 3px;">安装并配置必要的依赖</span><span class="suffix"></span><span style="display: inline-block; vertical-align: bottom; border-bottom: 36px solid #efebe9; border-right: 20px solid transparent;"> </span></h2>
