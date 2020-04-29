@@ -751,3 +751,13 @@ a {
   font-size: 16px;
   margin: 4px 8px;
 }
+
+      li > code {
+  background: rgb(243, 244, 244);
+  color: #f07078;
+}
+.post-detail .post-content p > code {
+  background: rgb(243, 244, 244);
+  color: #f07078;
+}
+    

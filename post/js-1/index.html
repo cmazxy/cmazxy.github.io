@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | Cmaz</title>
+<title>js-1 | Cmaz</title>
 <meta name="referrer" content="no-referrer"/>
 <meta name="description" content="我还是从前那个少年">
 
@@ -99,14 +99,62 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于</h2>
-            <div class="post-date">2019-12-13</div>
+            <h2 class="post-title">js-1</h2>
+            <div class="post-date">2020-04-29</div>
             
             <div class="post-content">
-              <p>我还是从前那个少年</p>
+              <h2 id="1简要描述下什么是回调函数并写一个例子出来">1.简要描述下什么是回调函数并写一个例子出来</h2>
+<p>回调是把一个函数作为参数传递给另一个函数，当该函数满足某个条件时触发该参数函数。<br>
+主要用于异步操作 例如网络请求 防止页面同步代码阻塞导致渲染线程停止</p>
+<pre><code>function longTask(callback,timeout) {
+  setTimeout(callback,timeout)
+}
+longTask(()=&gt;{console.log(&quot;回调任务被执行了&quot;);},2000);
+console.log(&quot;我是同步代码 不会阻塞我&quot;);
+</code></pre>
+<h2 id="2说说你对javascript的作用域的理解">2.说说你对javascript的作用域的理解</h2>
+<ol>
+<li>全局作用域。这个没啥说的，就是在顶层环境中申明的变量都是全局作用域，他们的属性其实都在window对象下面(node是在global对象下)。</li>
+<li>函数作用域。在函数内部定义的变量都是函数作用域，只能在函数中访问到，当然也可以通过闭包来访问。除此之外，在其他地方是没法访问函数内部的变量的。</li>
+<li>局部作用域。es6中新增的特性，for循环中使用let 声明变量，那么这里的这个变量就是局部变量，局部变量弥补了以前只能使用匿名及时运行函数来创建局部变量的缺陷。使用很简单，直接用let来申明变量就行。也可以使用const来申明变量，表明这是常数。</li>
+<li>作用域链。要说清这个，需要首先明白javascript的代码运行过程。假设现在有个函数funcA，在该函数内部申明了一个局部变量a，在函数内部又定义了一个函数funcB，在函数B中申明了变量b。如下：</li>
+</ol>
+<pre><code>function funcA () {
+  let a;
+  function funcB () {
+    let b;
+  }
+}
+</code></pre>
+<p>当进入funcA时，这时候会把变量a压入当前的作用域A中，并且将作用域A入栈，当进入funcB时，则会把变量b压入当前的作用域B中，并且将作用域B入栈，那么这时候栈中就有了作用域A和作用域B，当在funcB中查找某个变量时，会先从当前的作用域B中查找，如果没有的话，那么就根据栈中的作用域依次往上查找，这就是作用域链。</p>
+<h2 id="3什么是闭包优缺点分别是什么">3.什么是闭包？优缺点分别是什么？</h2>
+<p>当一个函数可以访问另外一个函数的内部变量， 那么这个函数称之为闭包<br>
+用法<br>
+函数返回函数，形成局部作用域<br>
+优点<br>
+局部作用域，防止变量污染</p>
+<pre><code>function A(){
+  var a = 0;
+ return function(){
+   return a++
+ }
+}
+let B = A()
+console.log(B())
+</code></pre>
+<h2 id="4未完-待">4.未完 待</h2>
 
             </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://cmazxy.com/post/htmlandcss-ji-chu-3/">
+                  <h3 class="post-title">
+                    HTML&amp;CSS-3
+                  </h3>
+                </a>
+              </div>
             
 
             

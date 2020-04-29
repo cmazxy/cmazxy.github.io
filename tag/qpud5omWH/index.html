@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | Cmaz</title>
+<title>css | Cmaz</title>
 <meta name="referrer" content="no-referrer"/>
 <meta name="description" content="我还是从前那个少年">
 
@@ -14,12 +14,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://cmazxy.com/styles/main.css">
 
-
-  
-    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
-  
-
-  
 
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -98,26 +92,43 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <div class="post-detail">
-            <h2 class="post-title">关于</h2>
-            <div class="post-date">2019-12-13</div>
-            
-            <div class="post-content">
-              <p>我还是从前那个少年</p>
-
-            </div>
-            
-            
-
-            
+          <h2 class="current-tag">标签: css</h2>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://cmazxy.com/post/htmlandcss-ji-chu-3/">
+                  <h2 class="post-title">HTML&amp;CSS-3</h2>
+                </a>
+                <div class="post-date">
+                  2020-04-29
+                </div>
+                <div class="post-abstract">
+                  
+                </div>
+              </div>
               
-                <div id="gitalk-container" data-aos="fade-in"></div>
+            </article>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://cmazxy.com/post/2020429/">
+                  <h2 class="post-title">HTML&amp;CSS-1</h2>
+                </a>
+                <div class="post-date">
+                  2020-04-29
+                </div>
+                <div class="post-abstract">
+                  
+                </div>
+              </div>
               
+            </article>
+          
 
-              
-            
-
-          </div>
+          <div class="pagination-container">
+  
+  
+</div>
 
         </div>
       </div>
@@ -139,29 +150,6 @@ var app = new Vue({
 })
 
 </script>
-
-
-
-  
-    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-    <script>
-
-      var gitalk = new Gitalk({
-        clientID: '2aa77d2272e1e3bb0303',
-        clientSecret: '5b398ba25580e35d04907a9bac95b520cf2e1457',
-        repo: 'cmazxy.github.io',
-        owner: 'cmazxy',
-        admin: ['cmazxy'],
-        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
-        distractionFreeMode: false  // Facebook-like distraction free mode
-      })
-
-      gitalk.render('gitalk-container')
-
-    </script>
-  
-
-  
 
 
 

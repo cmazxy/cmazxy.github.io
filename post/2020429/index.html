@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>HTML&amp;CSS-1 | Cmaz</title>
+<meta name="referrer" content="no-referrer"/>
+<meta name="description" content="我还是从前那个少年">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1588154839802">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cmazxy.com/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://cmazxy.com">
+        <img src="https://cmazxy.com/images/avatar.png?v=1588154839802" class="site-logo">
+        <h1 class="site-title">Cmaz</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      我还是从前那个少年
+    </div>
+    <div class="site-footer">
+      By <a href="https://cmazxy.github.io/post/about/">@Cmaz</a> | <a class="rss" href="https://cmazxy.com/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">HTML&amp;CSS-1</h2>
+            <div class="post-date">2020-04-29</div>
+            
+            <div class="post-content">
+              <h2 id="1页面导入样式时使用link和import有什么区别">1.页面导入样式时，使用link和@import有什么区别？</h2>
+<ul>
+<li>link是HTML标签，@import是CSS提供的</li>
+<li>由于link是HTML标签所以它没有兼容问题，而@import不兼容ie5以下</li>
+<li>link引入的样式在页面加载的同时加载，@import引入的样式需要等页面加载完以后才能加载</li>
+<li>ling可以通过js操作动态引入样式，而@import不可以</li>
+<li>link标签要在head标签内使用，而@import要在style标签内或css样式内使用<pre><code class="language-js">&lt;head&gt;
+  &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style.css&quot;&gt;
+  &lt;style&gt;
+      @import url(style.css);
+  &lt;/style&gt;
+&lt;/head&gt;
+</code></pre>
+</li>
+</ul>
+<h2 id="2html的元素有哪些包含h5">2.html的元素有哪些（包含H5）？</h2>
+<ol>
+<li>行内元素：</li>
+</ol>
+<ul>
+<li>a</li>
+<li>b</li>
+<li>span</li>
+<li>strong</li>
+<li>i</li>
+<li>em</li>
+<li>button</li>
+<li>input</li>
+<li>label</li>
+<li>br</li>
+<li>textarea</li>
+<li>select</li>
+</ul>
+<ol start="2">
+<li>块元素</li>
+</ol>
+<ul>
+<li>div</li>
+<li>p</li>
+<li>h1-h6</li>
+<li>ol</li>
+<li>ul</li>
+<li>li</li>
+<li>table</li>
+<li>tbody</li>
+<li>td</li>
+<li>tr</li>
+<li>thead</li>
+<li>dl</li>
+<li>dt</li>
+<li>dd</li>
+</ul>
+<ol start="3">
+<li>H5新增元素</li>
+</ol>
+<ul>
+<li>section</li>
+<li>article</li>
+<li>audio</li>
+<li>video</li>
+<li>hearder</li>
+<li>footer</li>
+<li>nav</li>
+<li>canvas</li>
+</ul>
+<h2 id="3css3有哪些新增的特性">3.CSS3有哪些新增的特性？</h2>
+<ol>
+<li>边框(borders):</li>
+</ol>
+<ul>
+<li>border-radius 圆角</li>
+<li>box-shadow 盒阴影</li>
+<li>border-image 边框图像</li>
+</ul>
+<ol start="2">
+<li>背景:</li>
+</ol>
+<ul>
+<li>background-size 背景图片的尺寸</li>
+<li>background_origin 背景图片的定位区域</li>
+<li>background-clip 背景图片的绘制区域</li>
+</ul>
+<ol start="3">
+<li>渐变：</li>
+</ol>
+<ul>
+<li>linear-gradient 线性渐变</li>
+<li>radial-gradient 径向渐变</li>
+</ul>
+<ol start="4">
+<li>转换：</li>
+</ol>
+<ul>
+<li>transform
+<ul>
+<li>translate</li>
+<li>rotate</li>
+<li>scale</li>
+</ul>
+</li>
+</ul>
+<ol start="5">
+<li>过渡</li>
+</ol>
+<ul>
+<li>transition</li>
+</ul>
+<ol start="6">
+<li>动画</li>
+</ol>
+<ul>
+<li>@Keyframes规则</li>
+<li>animation</li>
+</ul>
+<ol start="7">
+<li>弹性盒子(flexbox)</li>
+<li>多媒体查询@media</li>
+</ol>
+<h2 id="3全局属性用于任何html5元素的属性">3.全局属性：用于任何HTML5元素的属性</h2>
+<ul>
+<li>accesskey:设置快捷键</li>
+<li>class:为元素设置类标识</li>
+<li>contenteditable:指定元素内容是否可编辑</li>
+<li>contextmenu:自定义鼠标右键弹出上下文菜单内容（仅firefox支持）</li>
+<li>data-*:为元素增加自定义属性</li>
+<li>dir：设置元素文本方向（默认ltr；rtl）</li>
+<li>draggable:设置元素是否可拖拽</li>
+<li>dropzone:设置元素拖放类型（copy|move|link,H5新属性，主流均不支持）</li>
+<li>hidden:规定元素仍未或不在相关</li>
+<li>id:元素id，文档内唯一</li>
+<li>lang:元素内容的语言</li>
+<li>spellcheck:是否启动拼写和语法检查</li>
+<li>style:行内css样式</li>
+<li>tabindex:设置元素可以获得焦点，通过tab导航</li>
+<li>title:规定元素有关的额外信息</li>
+<li>translate:元素和子孙节点内容是否需要本地化（均不支持）</li>
+</ul>
+<h2 id="5在页面上隐藏元素的方法有哪些">5.在页面上隐藏元素的方法有哪些？</h2>
+<ul>
+<li>占位:
+<ul>
+<li>visibility: hidden;</li>
+<li>margin-left: -100%;</li>
+<li>opacity: 0;</li>
+<li>transform: scale(0);</li>
+</ul>
+</li>
+<li>不占位:
+<ul>
+<li>display: none;</li>
+<li>width: 0; height: 0; overflow: hidden;</li>
+</ul>
+</li>
+<li>仅对块内文本元素:
+<ul>
+<li>text-indent: -9999px;</li>
+<li>font-size: 0;</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://cmazxy.com/tag/qpud5omWH/" class="tag">
+                    css
+                  </a>
+                
+                  <a href="https://cmazxy.com/tag/LGm9udeZwX/" class="tag">
+                    html
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://cmazxy.com/post/typescript-zhong-de-han-shu/">
+                  <h3 class="post-title">
+                    TypeScript中的函数
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '2aa77d2272e1e3bb0303',
+        clientSecret: '5b398ba25580e35d04907a9bac95b520cf2e1457',
+        repo: 'cmazxy.github.io',
+        owner: 'cmazxy',
+        admin: ['cmazxy'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>HTML&amp;CSS-3 | Cmaz</title>
+<meta name="referrer" content="no-referrer"/>
+<meta name="description" content="我还是从前那个少年">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1588154839802">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cmazxy.com/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://cmazxy.com">
+        <img src="https://cmazxy.com/images/avatar.png?v=1588154839802" class="site-logo">
+        <h1 class="site-title">Cmaz</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      我还是从前那个少年
+    </div>
+    <div class="site-footer">
+      By <a href="https://cmazxy.github.io/post/about/">@Cmaz</a> | <a class="rss" href="https://cmazxy.com/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">HTML&amp;CSS-3</h2>
+            <div class="post-date">2020-04-29</div>
+            
+            <div class="post-content">
+              <h2 id="1你对标签语义化的理解是什么">1.你对标签语义化的理解是什么？</h2>
+<ol>
+<li>标签语义化的可读性更高，便于团队开发维护</li>
+<li>在没有css的情况下，页面也可以呈现出也很好的内容结构和代码结构</li>
+<li>更好的SEO，搜索引擎能更好的理解页面中各部分的关系，可更快更准确的搜索到信息</li>
+</ol>
+<h2 id="2常见的浏览器内核都有哪些">2.常见的浏览器内核都有哪些？</h2>
+<p>内核主要分为渲染引擎和 JS 引擎。前者负责页面的渲染，后者负责执行解析 JavaScript。<br>
+之后，由于 JS 引擎越来越独立，现在所说的浏览器内核大都指渲染引擎。<br>
+目前主流的内核有以下 4 个：<br>
+Trident: 由微软开发，即我们熟知的 IE 内核<br>
+Gecko: 使用 C++ 开发的渲染引擎，包括了 SpiderMonkey 即我们熟悉的 FireFox<br>
+Presto: Opera 使用的内核<br>
+Webkit: 前端使用最多的 Chrome 和 Safari 使用的内核</p>
+<h2 id="3说说你对css盒子模型的理解">3.说说你对css盒子模型的理解</h2>
+<ol>
+<li>基本概念：标准模型+IE模型</li>
+<li>css如何设置这两种模式<br>
+2.1<br>
+标准盒模型：box-sizing:content-box;<br>
+标准盒模型的宽度 = margin + border + padding + width(content)<br>
+2.2<br>
+IE盒模型：box-sizing:border-box;<br>
+IE盒模型的宽度 = margin + width (content+padding+border)</li>
+</ol>
+<blockquote>
+<p>两种盒模型的宽度实际上都包括 margin、border 、padding、content这四部分<br>
+只是它们对width这个属性的解释不同<br>
+ie盒模型对width的解释是 width = content + padding +border<br>
+标准盒模型对width的解释是 width = content</p>
+</blockquote>
+<h2 id="4js放在html的body和head有什么区别">4.js放在html的<body>和<head>有什么区别？</h2>
+<p>js 放在 <code>&lt;head&gt;</code> 中，如果不添加 <code>async</code>属性或<code>defer</code>，当浏览器遇到 <code>script</code>时，会阻塞 DOM 树的构建，进而影响页面的加载。当 js 文件较多时，页面白屏的时间也会变长。<br>
+在这个过程中，如果解析器遇到了一个脚本(script)，它就会停下来，并且执行这个脚本，然后才会继续解析 HTML。如果遇到了一个引用外部资源的脚本(script)，它就必须停下来等待这个脚本资源的下载，而这个行为会导致一个或者多个的网络往返，并且会延迟页面的首次渲染时间。<br>
+把 js 放到 <code>&lt;body&gt;</code> 里（一般在 <code>&lt;/body&gt;</code> 的上面）时，由于 DOM 时顺序解析的，因此 js 不会阻塞 DOM 的解析。对于必须要在 DOM 解析前就要加载的 js，我们需要放在 <code>&lt;head&gt;</code> 中。</p>
+<h2 id="5请说说script-script-async和script-defer的区别">5.请说说<code>&lt;script&gt;</code>、<code>&lt;script async&gt;</code>和<code>&lt;script defer&gt;</code>的区别</h2>
+<ol>
+<li><code>&lt;script&gt;</code>立即加载并执行相应的脚本。会阻塞后面的文档加载；</li>
+<li><code>&lt;script async&gt;</code>异步加载，脚本执行和后续文档代码加载同时进行；</li>
+<li><code>&lt;script defer&gt;</code>异步加载，脚本的执行需等倒所有文档加载完才执行。</li>
+</ol>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://cmazxy.com/tag/qpud5omWH/" class="tag">
+                    css
+                  </a>
+                
+                  <a href="https://cmazxy.com/tag/LGm9udeZwX/" class="tag">
+                    html
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://cmazxy.com/post/lessm2greaterhtmlcss-ji-chu/">
+                  <h3 class="post-title">
+                    HTML&amp;CSS-2
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '2aa77d2272e1e3bb0303',
+        clientSecret: '5b398ba25580e35d04907a9bac95b520cf2e1457',
+        repo: 'cmazxy.github.io',
+        owner: 'cmazxy',
+        admin: ['cmazxy'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

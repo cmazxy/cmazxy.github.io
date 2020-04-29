@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>HTML&amp;CSS-2 | Cmaz</title>
+<meta name="referrer" content="no-referrer"/>
+<meta name="description" content="我还是从前那个少年">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1588154839802">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cmazxy.com/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://cmazxy.com">
+        <img src="https://cmazxy.com/images/avatar.png?v=1588154839802" class="site-logo">
+        <h1 class="site-title">Cmaz</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      我还是从前那个少年
+    </div>
+    <div class="site-footer">
+      By <a href="https://cmazxy.github.io/post/about/">@Cmaz</a> | <a class="rss" href="https://cmazxy.com/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">HTML&amp;CSS-2</h2>
+            <div class="post-date">2020-04-29</div>
+            
+            <div class="post-content">
+              <h2 id="1简述超链接target属性的取值和作用">1.简述超链接target属性的取值和作用</h2>
+<p>标签的 target 属性一共有四个值。</p>
+<ol>
+<li>_self</li>
+</ol>
+<blockquote>
+<p>默认属性。在当前窗口或者框架中加载目标文档。</p>
+</blockquote>
+<ol start="2">
+<li>_blank</li>
+</ol>
+<blockquote>
+<p>打开新的窗口或者新的标签页。在使用这个属性时，最好添加 rel=&quot;noopener norefferrer&quot; 属性，防止打开的新窗口对原窗口进行篡改。防止 window.opener API 的恶意行为。</p>
+</blockquote>
+<ol start="3">
+<li>_parent</li>
+</ol>
+<blockquote>
+<p>在 frame 或者 iframe 中使用较多。在父级框架中载入目标文档，当 a 标签本身在顶层时，与 _self 相同。</p>
+</blockquote>
+<ol start="4">
+<li>_top</li>
+</ol>
+<blockquote>
+<p>在 frame 或者 iframe 中使用较多。直接在顶层的框架中载入目标文档，加载整个窗口。</p>
+</blockquote>
+<h2 id="2简述你对bfc规范的理解">2.简述你对BFC规范的理解</h2>
+<blockquote>
+<p>是CSS中的一个渲染机制，BFC就相当于一个盒子，内部的元素与外界的元素互不干扰。它不会影响外部的布局，外部的布局也不会影响到它。</p>
+</blockquote>
+<ul>
+<li>形成条件（任意一条）
+<ul>
+<li>float的值不是none</li>
+<li>position 的值不是static或者relative</li>
+<li>display的值是inline-block,table-cell,flex,table-caption或者inline-flex</li>
+<li>overflow的值不是visible</li>
+</ul>
+</li>
+<li>特性
+<ul>
+<li>内部的盒子会在垂直方向上一个接一个的放置</li>
+<li>对于同一个BFC的俩个相邻的盒子的margin会发生重叠，与方向无关。</li>
+<li>每个元素的左外边距与包含块的左边界相接触（从左到右），即使浮动元素也是如此</li>
+<li>BFC的区域不会与float的元素区域重叠</li>
+<li>计算BFC的高度时，浮动子元素也参与计算</li>
+<li>BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然</li>
+</ul>
+</li>
+</ul>
+<h2 id="3清除浮动的方式有哪些及优缺点">3.清除浮动的方式有哪些及优缺点？</h2>
+<ol>
+<li>浮动元素外部盒子塌陷出现的原因</li>
+</ol>
+<blockquote>
+<p>父元素只包含浮动元素，那么它的高度就会塌缩为零，前提是外部盒子没有设置高度（height）属性</p>
+</blockquote>
+<ol start="2">
+<li>解决方案</li>
+</ol>
+<blockquote>
+<p>2.1 给外部盒子也添加浮动，把外部盒子也从标准文档流中抽离，让它和孩子们见面。<br>
+2.2  在外部盒子内最下方添上带clear属性的空盒子 <code>&lt;div style=&quot;clear:both;&quot;&gt;&lt;/div&gt;</code></p>
+</blockquote>
+<h2 id="4浏览器内多个标签页之间的通信方式有哪些">4.浏览器内多个标签页之间的通信方式有哪些？</h2>
+<p><code>https://xv700.gitee.io/message-communication-for-web/#introduce</code></p>
+<h2 id="5viewport常见设置都有哪些">5.viewport常见设置都有哪些？</h2>
+<p>1.viewport 基本上只对移动端网页有用，一般移动端的网页我们是这么写的：<br>
+<code>&lt;meta name=”viewport” content=”width=device-width, initial-scale=1, maximum-scale=1 minimum-scale=1 user-scalable=no”&gt;</code></p>
+<h2 id="6-对比px-em-rem-vw-vh有什么不同">6. 对比px em rem vw vh有什么不同</h2>
+<ol>
+<li>px: 像素，相对长度单位，PC端最小字体是12px，如果需要更小的字体可以使用 <code>transform: scale(x);</code> 进行缩放处理。px 是相对显示器屏幕分辨率而言的。DPR(设备像素比)：DPR=物理像素/css像素，以iphone7P为例（DPR=3），1个css像素等于3个物理像素，移动端开发我们通常会使用 <code>postcss-px-to-viewport</code> 插件帮我们转掉</li>
+<li>em: 相对长度单位，em 相对于当前对象内文本的字体尺寸。通常 1em = 16px。</li>
+<li>rem: root em，CSS3 新增的一个相对单位。相对大小相对的只是HTML根元素的font-size大小。<br>
+如果HTML的font-size是16px。那么1rem = 16px</li>
+<li>vw：相对单位，1vw等于于当前视口宽度的1%</li>
+<li>vh: 相对单位，1vh等于于当前视口高度的1%</li>
+</ol>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://cmazxy.com/post/2020429/">
+                  <h3 class="post-title">
+                    HTML&amp;CSS-1
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '2aa77d2272e1e3bb0303',
+        clientSecret: '5b398ba25580e35d04907a9bac95b520cf2e1457',
+        repo: 'cmazxy.github.io',
+        owner: 'cmazxy',
+        admin: ['cmazxy'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
