@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>js-2 | Cmaz</title>
+<meta name="referrer" content="no-referrer"/>
+<meta name="description" content="学如不及，犹恐失之。">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1588241487979">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cmazxy.com/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://cmazxy.com">
+        <img src="https://cmazxy.com/images/avatar.png?v=1588241487979" class="site-logo">
+        <h1 class="site-title">Cmaz</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      学如不及，犹恐失之。
+    </div>
+    <div class="site-footer">
+      <a href="https://cmazxy.github.io/post/about/">@Cmaz</a> | <a class="rss" href="https://cmazxy.com/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">js-2</h2>
+            <div class="post-date">2020-04-30</div>
+            
+            <div class="post-content">
+              <h2 id="1你对new操作符的理解是什么">1.你对new操作符的理解是什么？</h2>
+<blockquote>
+<p>new 运算符创建一个用户定义的对象类型的实例<br>
+<strong>new的过程</strong></p>
+</blockquote>
+<ol>
+<li>创建一个新对象</li>
+<li>把新对象的原型(_<em>proto_</em>)指向构造函数的prototype</li>
+<li>把构造函数里的this指向新对象</li>
+<li>执行构造函数</li>
+<li>返回这个新对象</li>
+</ol>
+<h2 id="2说说你对this的理解">2.说说你对this的理解</h2>
+<p>JavaScript 中的 this 用一句话来概括，就是在运行时确定的。从现象上来看，就是谁调用了某个方法，那么这个方法中的 this 指向谁。<br>
+下面是最常见的例子：</p>
+<pre><code class="language-js">const obj = {
+  sayThis: function() {
+    console.log(this);
+  }
+};
+
+obj.sayThis(); // obj
+const globalSay = obj.sayThis;
+globalSay(); // window 浏览器中的 global 对象
+</code></pre>
+<blockquote>
+<p>谁调用了某个方法，那么这个方法中的 this 指向谁<br>
+这个“谁”我们可以通过 . 操作符来判断。比如 <code>obj.sayThis()</code>，这里就是 <code>obj</code>调用了 <code>sayThis</code> 方法，所以 <code>this</code> 指向 <code>obj</code>。而后一个 <code>globalSay()</code> 是直接调用的，在 JavaScript 中会把这个方法绑在全局（window)上，所以本质就是 <code>window.globalSay()</code>，自然这里的 <code>this</code> 就指向了 <code>window</code>。</p>
+</blockquote>
+<p>JavaScript 给我们提供了 <code>apply/call/bind</code> 三种方法来改变 this 的指向。在 ES6 的语法中还提供了箭头函语法，让我们在代码书写时就能确定 this 的指向（编译时绑定）。唯一需要注意的就是要避开箭头函数带来的坑。<br>
+把上面的例子改为箭头函数，结果完全不同。</p>
+<pre><code class="language-js">const obj = {
+  sayThis: () =&gt; {
+    console.log(this);
+  }
+};
+
+obj.sayThis(); // window 因为 JavaScript 没有块作用域，所以在定义 sayThis 的时候，里面的 this 就绑到 window 上去了
+const globalSay = obj.sayThis;
+globalSay(); // window 浏览器中的 global 对象
+</code></pre>
+<h2 id="3为什么会有跨域问题怎么解决跨域">3.为什么会有跨域问题？怎么解决跨域</h2>
+<p><strong>为什么会有跨域</strong><br>
+因为浏览器的同源策略，协议、域名、端口有一个不同，就会产生跨域。<br>
+<strong>怎么解决跨域</strong></p>
+<h3 id="jsonp-只支持get请求">JSONP ---只支持get请求</h3>
+<p>应该是最常见解决跨域的方法了，<br>
+他为什么能解决跨域呢，是因为Web 页面上调用 js 文件不受浏览器同源策略的影响，所以通过 Script 便签可以进行跨域的请求：</p>
+<p>首先前端先设置好回调函数，并将其作为 url 的参数。<br>
+服务端接收到请求后，通过该参数获得回调函数名，并将数据放在参数中将其返回<br>
+收到结果后因为是 script 标签，所以浏览器会当做是3脚本进行运行，从而达到跨域获取数据的目的。<br>
+我的前端是index.html，后端是server.js<br>
+后端逻辑：</p>
+<pre><code class="language-js">//server.js
+const url = require('url');
+const http = require('http');
+
+http.createServer((req, res)=&gt;{
+    const data = {
+        x: 10//返回的数据
+    };
+    const callback = url.parse(req.url, true).query.callback;
+    res.writeHead(200);
+    res.end(`${callback}(${JSON.stringify(data)})`);
+    //执行回调函数，返回data
+}).listen(3000, 'localhost');
+
+console.log('启动服务，监听 localhost:3000');
+</code></pre>
+<p>前端：</p>
+<pre><code class="language-js">//index.html
+&lt;body&gt;
+    &lt;script&gt;
+	function jsonpCallback(data) {
+	    console.log('获得 X 数据:' + data.x);
+	}
+    &lt;/script&gt;
+    &lt;script src=&quot;http://localhost:3000?callback=jsonpCallback&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+<p>至此，通过 JSONP 跨域获取数据已经成功了，jsonp这种方法跨域，他的兼容性很好，可以在古老的浏览器中使用，因为这种方法是利用了<code>&lt;script&gt;</code>标签的特殊性，所有只支持GET请求。</p>
+<h3 id="cors">CORS</h3>
+<p>CORS 是一个 W3C 标准，全称是&quot;跨域资源共享&quot;（Cross-origin resource sharing）它允许浏览器向跨源服务器，发出 XMLHttpRequest 请求，从而克服了 ajax 只能同源使用的限制。</p>
+<p>CORS 需要浏览器和服务器同时支持才可以生效，对于开发者来说，CORS 通信与同源的 ajax 通信没有差别，代码完全一样。浏览器一旦发现 ajax 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
+<p>因此，实现 CORS 通信的关键是服务器。只要服务器实现了 CORS 接口，就可以跨源通信。</p>
+<p>后端要在响应头设置：</p>
+<pre><code class="language-js">Access-Control-Allow-Origin: *
+</code></pre>
+<h3 id="server-proxy">Server Proxy</h3>
+<p>服务器代理，顾名思义，当你需要有跨域的请求操作时发送请求给后端，让后端帮你代为请求，然后最后将获取的结果发送给你。因为后端没有同源策略这个狗东西的嘛</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://cmazxy.com/post/liu-lan-qi-1/">
+                  <h3 class="post-title">
+                    浏览器-1
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+              
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              
+
+              
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '2aa77d2272e1e3bb0303',
+        clientSecret: '5b398ba25580e35d04907a9bac95b520cf2e1457',
+        repo: 'cmazxy.github.io',
+        owner: 'cmazxy',
+        admin: ['cmazxy'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>

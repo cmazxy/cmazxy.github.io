@@ -5,12 +5,12 @@
 
 <title>js-1 | Cmaz</title>
 <meta name="referrer" content="no-referrer"/>
-<meta name="description" content="我还是从前那个少年">
+<meta name="description" content="学如不及，犹恐失之。">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1588154839802">
+<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1588241487979">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://cmazxy.com/styles/main.css">
 
@@ -37,7 +37,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://cmazxy.com">
-        <img src="https://cmazxy.com/images/avatar.png?v=1588154839802" class="site-logo">
+        <img src="https://cmazxy.com/images/avatar.png?v=1588241487979" class="site-logo">
         <h1 class="site-title">Cmaz</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -87,10 +87,10 @@
       
     </div>
     <div class="site-description">
-      我还是从前那个少年
+      学如不及，犹恐失之。
     </div>
     <div class="site-footer">
-      By <a href="https://cmazxy.github.io/post/about/">@Cmaz</a> | <a class="rss" href="https://cmazxy.com/atom.xml" target="_blank">RSS</a>
+      <a href="https://cmazxy.github.io/post/about/">@Cmaz</a> | <a class="rss" href="https://cmazxy.com/atom.xml" target="_blank">RSS</a>
     </div>
   </div>
 </div>
@@ -106,7 +106,7 @@
               <h2 id="1简要描述下什么是回调函数并写一个例子出来">1.简要描述下什么是回调函数并写一个例子出来</h2>
 <p>回调是把一个函数作为参数传递给另一个函数，当该函数满足某个条件时触发该参数函数。<br>
 主要用于异步操作 例如网络请求 防止页面同步代码阻塞导致渲染线程停止</p>
-<pre><code>function longTask(callback,timeout) {
+<pre><code class="language-js">function longTask(callback,timeout) {
   setTimeout(callback,timeout)
 }
 longTask(()=&gt;{console.log(&quot;回调任务被执行了&quot;);},2000);
@@ -119,7 +119,7 @@ console.log(&quot;我是同步代码 不会阻塞我&quot;);
 <li>局部作用域。es6中新增的特性，for循环中使用let 声明变量，那么这里的这个变量就是局部变量，局部变量弥补了以前只能使用匿名及时运行函数来创建局部变量的缺陷。使用很简单，直接用let来申明变量就行。也可以使用const来申明变量，表明这是常数。</li>
 <li>作用域链。要说清这个，需要首先明白javascript的代码运行过程。假设现在有个函数funcA，在该函数内部申明了一个局部变量a，在函数内部又定义了一个函数funcB，在函数B中申明了变量b。如下：</li>
 </ol>
-<pre><code>function funcA () {
+<pre><code class="language-js">function funcA () {
   let a;
   function funcB () {
     let b;
@@ -133,16 +133,52 @@ console.log(&quot;我是同步代码 不会阻塞我&quot;);
 函数返回函数，形成局部作用域<br>
 优点<br>
 局部作用域，防止变量污染</p>
-<pre><code>function A(){
-  var a = 0;
- return function(){
-   return a++
- }
+<pre><code class="language-js">function A(){
+    var a = 0;
+    return function(){
+        return a++
+    }
 }
 let B = A()
 console.log(B())
 </code></pre>
-<h2 id="4未完-待">4.未完 待</h2>
+<h2 id="4写一个判断设备来源的方法">4.写一个判断设备来源的方法</h2>
+<p>通过 navigator.userAgent 属性  搭配正则匹配来判断</p>
+<pre><code class="language-js">let ua = navigator.userAgent;
+  // 移动端
+  isMobile: (&quot;ontouchstart&quot; in window || navigator.msMaxTouchPoints) ? true : false,
+  // 微信
+  isWechat: /micromessenger/gi.test(ua),
+  // qq
+  isQQ: /qq/gi.test(ua),
+  // VV音乐
+  isvvmusic: /vvmusic/gi.test(ua),
+  // 安卓
+  isAndroid: /android/gi.test(ua),
+  // iOS
+  isIOS: /iphone|ipad|ipod|itouch/gi.test(ua), // IOS
+</code></pre>
+<h2 id="5说说bind-call-apply的区别">5.说说bind、call、apply的区别？</h2>
+<p>call和apply都是为了解决改变this的指向。作用都是相同的，只是传参的方式不同。<br>
+除了第一个参数外，call可以接收一个参数列表，apply只接受一个参数数组。 bind绑定完之后返回一个新的函数，不执行。</p>
+<pre><code class="language-js">// apply 立即执行
+People.apply(dog, [name, age]);
+People.apply(dog, arguments);
+
+// call 立即执行
+People.apply(dog, name, age);
+
+// bind 返回一个新的函数  不立即执行
+var Dog = People.apply(dog);
+Dog (name, age())
+</code></pre>
+<h2 id="6说说你对arguments的理解它是数组吗">6.说说你对arguments的理解，它是数组吗？</h2>
+<p>arguments 不是数组，是类数组，但是它有length属性以及可以以下标的形式取值<br>
+类数组 转 数组的方法有</p>
+<pre><code class="language-js">[...arguments]
+Array.from(arguments)
+Array.prototype.slice.call(arguments)
+</code></pre>
 
             </div>
             

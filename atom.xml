@@ -2,14 +2,192 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cmazxy.com</id>
     <title>Cmaz</title>
-    <updated>2020-04-29T10:07:26.267Z</updated>
+    <updated>2020-04-30T10:11:32.972Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://cmazxy.com"/>
     <link rel="self" href="https://cmazxy.com/atom.xml"/>
-    <subtitle>我还是从前那个少年</subtitle>
+    <subtitle>学如不及，犹恐失之。</subtitle>
     <logo>https://cmazxy.com/images/avatar.png</logo>
     <icon>https://cmazxy.com/favicon.ico</icon>
     <rights>All rights reserved 2020, Cmaz</rights>
+    <entry>
+        <title type="html"><![CDATA[js-2]]></title>
+        <id>https://cmazxy.com/post/js-2/</id>
+        <link href="https://cmazxy.com/post/js-2/">
+        </link>
+        <updated>2020-04-30T09:19:06.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1你对new操作符的理解是什么">1.你对new操作符的理解是什么？</h2>
+<blockquote>
+<p>new 运算符创建一个用户定义的对象类型的实例<br>
+<strong>new的过程</strong></p>
+</blockquote>
+<ol>
+<li>创建一个新对象</li>
+<li>把新对象的原型(_<em>proto_</em>)指向构造函数的prototype</li>
+<li>把构造函数里的this指向新对象</li>
+<li>执行构造函数</li>
+<li>返回这个新对象</li>
+</ol>
+<h2 id="2说说你对this的理解">2.说说你对this的理解</h2>
+<p>JavaScript 中的 this 用一句话来概括，就是在运行时确定的。从现象上来看，就是谁调用了某个方法，那么这个方法中的 this 指向谁。<br>
+下面是最常见的例子：</p>
+<pre><code class="language-js">const obj = {
+  sayThis: function() {
+    console.log(this);
+  }
+};
+
+obj.sayThis(); // obj
+const globalSay = obj.sayThis;
+globalSay(); // window 浏览器中的 global 对象
+</code></pre>
+<blockquote>
+<p>谁调用了某个方法，那么这个方法中的 this 指向谁<br>
+这个“谁”我们可以通过 . 操作符来判断。比如 <code>obj.sayThis()</code>，这里就是 <code>obj</code>调用了 <code>sayThis</code> 方法，所以 <code>this</code> 指向 <code>obj</code>。而后一个 <code>globalSay()</code> 是直接调用的，在 JavaScript 中会把这个方法绑在全局（window)上，所以本质就是 <code>window.globalSay()</code>，自然这里的 <code>this</code> 就指向了 <code>window</code>。</p>
+</blockquote>
+<p>JavaScript 给我们提供了 <code>apply/call/bind</code> 三种方法来改变 this 的指向。在 ES6 的语法中还提供了箭头函语法，让我们在代码书写时就能确定 this 的指向（编译时绑定）。唯一需要注意的就是要避开箭头函数带来的坑。<br>
+把上面的例子改为箭头函数，结果完全不同。</p>
+<pre><code class="language-js">const obj = {
+  sayThis: () =&gt; {
+    console.log(this);
+  }
+};
+
+obj.sayThis(); // window 因为 JavaScript 没有块作用域，所以在定义 sayThis 的时候，里面的 this 就绑到 window 上去了
+const globalSay = obj.sayThis;
+globalSay(); // window 浏览器中的 global 对象
+</code></pre>
+<h2 id="3为什么会有跨域问题怎么解决跨域">3.为什么会有跨域问题？怎么解决跨域</h2>
+<p><strong>为什么会有跨域</strong><br>
+因为浏览器的同源策略，协议、域名、端口有一个不同，就会产生跨域。<br>
+<strong>怎么解决跨域</strong></p>
+<h3 id="jsonp-只支持get请求">JSONP ---只支持get请求</h3>
+<p>应该是最常见解决跨域的方法了，<br>
+他为什么能解决跨域呢，是因为Web 页面上调用 js 文件不受浏览器同源策略的影响，所以通过 Script 便签可以进行跨域的请求：</p>
+<p>首先前端先设置好回调函数，并将其作为 url 的参数。<br>
+服务端接收到请求后，通过该参数获得回调函数名，并将数据放在参数中将其返回<br>
+收到结果后因为是 script 标签，所以浏览器会当做是3脚本进行运行，从而达到跨域获取数据的目的。<br>
+我的前端是index.html，后端是server.js<br>
+后端逻辑：</p>
+<pre><code class="language-js">//server.js
+const url = require('url');
+const http = require('http');
+
+http.createServer((req, res)=&gt;{
+    const data = {
+        x: 10//返回的数据
+    };
+    const callback = url.parse(req.url, true).query.callback;
+    res.writeHead(200);
+    res.end(`${callback}(${JSON.stringify(data)})`);
+    //执行回调函数，返回data
+}).listen(3000, 'localhost');
+
+console.log('启动服务，监听 localhost:3000');
+</code></pre>
+<p>前端：</p>
+<pre><code class="language-js">//index.html
+&lt;body&gt;
+    &lt;script&gt;
+	function jsonpCallback(data) {
+	    console.log('获得 X 数据:' + data.x);
+	}
+    &lt;/script&gt;
+    &lt;script src=&quot;http://localhost:3000?callback=jsonpCallback&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+</code></pre>
+<p>至此，通过 JSONP 跨域获取数据已经成功了，jsonp这种方法跨域，他的兼容性很好，可以在古老的浏览器中使用，因为这种方法是利用了<code>&lt;script&gt;</code>标签的特殊性，所有只支持GET请求。</p>
+<h3 id="cors">CORS</h3>
+<p>CORS 是一个 W3C 标准，全称是&quot;跨域资源共享&quot;（Cross-origin resource sharing）它允许浏览器向跨源服务器，发出 XMLHttpRequest 请求，从而克服了 ajax 只能同源使用的限制。</p>
+<p>CORS 需要浏览器和服务器同时支持才可以生效，对于开发者来说，CORS 通信与同源的 ajax 通信没有差别，代码完全一样。浏览器一旦发现 ajax 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
+<p>因此，实现 CORS 通信的关键是服务器。只要服务器实现了 CORS 接口，就可以跨源通信。</p>
+<p>后端要在响应头设置：</p>
+<pre><code class="language-js">Access-Control-Allow-Origin: *
+</code></pre>
+<h3 id="server-proxy">Server Proxy</h3>
+<p>服务器代理，顾名思义，当你需要有跨域的请求操作时发送请求给后端，让后端帮你代为请求，然后最后将获取的结果发送给你。因为后端没有同源策略这个狗东西的嘛</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[浏览器-1]]></title>
+        <id>https://cmazxy.com/post/liu-lan-qi-1/</id>
+        <link href="https://cmazxy.com/post/liu-lan-qi-1/">
+        </link>
+        <updated>2020-04-30T03:50:13.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1来说说你对重绘和重排的理解以及如何优化">1.来说说你对重绘和重排的理解，以及如何优化？</h2>
+<h3 id="重绘">重绘</h3>
+<p>重绘(repaint)：当元素样式的改变不影响布局时，浏览器将使用重绘对元素进行更新，此时由于只需要 UI 层面的重新像素绘制，因此损耗较少。<br>
+常见的重绘操作有：</p>
+<ol>
+<li>改变元素颜色</li>
+<li>改变元素背景色</li>
+</ol>
+<h3 id="回流重排">回流(重排)</h3>
+<p>回流(reflow)：又叫重排（layout）。当元素的尺寸、结构或者触发某些属性时，浏览器会重新渲染页面，称为回流。此时，浏览器需要重新经过计算，计算后还需要重新页面布局，因此是较重的操作。<br>
+常见的回流操作有：</p>
+<ol>
+<li>页面初次渲染</li>
+<li>浏览器窗口大小改变</li>
+<li>元素尺寸/位置/内容发生改变</li>
+<li>元素字体大小变化</li>
+<li>添加或者删除可见的 DOM 元素</li>
+<li>激活 CSS 伪类（:hover……）<br>
+<strong>重拍必定会触发重绘，重绘不一定会触发重排。重绘的开销较小，重排的代价较高。</strong><br>
+那么，在工作中我们要如何避免大量使用重绘与回流呢？：</li>
+<li>避免频繁操作样式，可汇总后统一一次修改</li>
+<li>尽量使用 class 进行样式修改，而不是直接操作样式</li>
+<li>减少 DOM 的操作，可使用字符串一次性插入</li>
+</ol>
+<h2 id="2从浏览器输入-url-到渲染成功的过程中究竟发生了什么">2.从浏览器输入 URL 到渲染成功的过程中，究竟发生了什么？</h2>
+<figure data-type="image" tabindex="1"><img src="https://user-gold-cdn.xitu.io/2019/3/12/169721e312f11eea?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[网络通信-1]]></title>
+        <id>https://cmazxy.com/post/wang-luo-tong-xin-1-wei-wan-dai/</id>
+        <link href="https://cmazxy.com/post/wang-luo-tong-xin-1-wei-wan-dai/">
+        </link>
+        <updated>2020-04-30T03:16:40.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1网页应用从服务器主动推送到客户端有那些方式">1.网页应用从服务器主动推送到客户端有那些方式？</h2>
+<ol>
+<li>webSocket<br>
+WebSocket 是一种在单个 TCP 连接上进行全双工通信的协议</li>
+</ol>
+<p>WebSocket 使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在 WebSocket API 中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</p>
+<ol start="2">
+<li>
+<p>eventsource(SSE)<br>
+EventSource 接口是 Web 内容与服务器发送的事件的接口。一个 EventSource 实例打开一个持久连接 HTTP 服务器，它发送事件的 text/event-stream 格式。连接保持打开状态，直到通过调用关闭 EventSource.close()。<br>
+与 WebSockets 不同，服务器发送的事件是单向的。也就是说，数据消息是从服务器到客户端（例如用户的 Web 浏览器）沿一个方向传递的</p>
+</li>
+<li>
+<p>Web Push<br>
+就是用户订阅了一个站点的 Web Push 服务后，即使用户关闭了浏览器，一旦站点主动发送推送消息，用户都能收到，只要你的电脑是开着的。这是目前谷歌和苹果在 Chrome 和 Safari 上都力推的一种全新推送服务，Firefox 最近也加入了这个阵营。</p>
+</li>
+</ol>
+<h2 id="2http都有哪些状态码">2.http都有哪些状态码？</h2>
+<ul>
+<li>200 成功</li>
+<li>301 重定向</li>
+<li>304 (未修改) 自从上次请求后，请求的网页未修改过。 服务器返回此响应时，不会返回网页内容。</li>
+<li>400 (错误请求) 服务器不理解请求的语法。</li>
+<li>403 (禁止) 服务器拒绝请求。</li>
+<li>404 (未找到) 服务器找不到请求的网页。</li>
+<li>500 (服务器内部错误) 服务器遇到错误，无法完成请求。</li>
+<li>501 (尚未实施) 服务器不具备完成请求的功能。 例如，服务器无法识别请求方法时可能会返回此代码。</li>
+<li>502 (错误网关) 服务器作为网关或代理，从上游服务器收到无效响应。</li>
+<li>503 (服务不可用) 服务器目前无法使用(由于超载或停机维护)。 通常，这只是暂时状态。</li>
+<li>504 (网关超时) 服务器作为网关或代理，但是没有及时从上游服务器收到请求。</li>
+<li>505 (HTTP 版本不受支持) 服务器不支持请求中所用的 HTTP 协议版本。<br>
+<strong>总结：</strong></li>
+<li>2xx 成功</li>
+<li>3xx 重定向</li>
+<li>4xx 未找到资源(前端问题)</li>
+<li>5xx 服务器异常(后端问题)</li>
+</ul>
+<h2 id="3-未完待">3. 未完待</h2>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[js-1]]></title>
         <id>https://cmazxy.com/post/js-1/</id>
@@ -19,7 +197,7 @@
         <content type="html"><![CDATA[<h2 id="1简要描述下什么是回调函数并写一个例子出来">1.简要描述下什么是回调函数并写一个例子出来</h2>
 <p>回调是把一个函数作为参数传递给另一个函数，当该函数满足某个条件时触发该参数函数。<br>
 主要用于异步操作 例如网络请求 防止页面同步代码阻塞导致渲染线程停止</p>
-<pre><code>function longTask(callback,timeout) {
+<pre><code class="language-js">function longTask(callback,timeout) {
   setTimeout(callback,timeout)
 }
 longTask(()=&gt;{console.log(&quot;回调任务被执行了&quot;);},2000);
@@ -32,7 +210,7 @@ console.log(&quot;我是同步代码 不会阻塞我&quot;);
 <li>局部作用域。es6中新增的特性，for循环中使用let 声明变量，那么这里的这个变量就是局部变量，局部变量弥补了以前只能使用匿名及时运行函数来创建局部变量的缺陷。使用很简单，直接用let来申明变量就行。也可以使用const来申明变量，表明这是常数。</li>
 <li>作用域链。要说清这个，需要首先明白javascript的代码运行过程。假设现在有个函数funcA，在该函数内部申明了一个局部变量a，在函数内部又定义了一个函数funcB，在函数B中申明了变量b。如下：</li>
 </ol>
-<pre><code>function funcA () {
+<pre><code class="language-js">function funcA () {
   let a;
   function funcB () {
     let b;
@@ -46,16 +224,52 @@ console.log(&quot;我是同步代码 不会阻塞我&quot;);
 函数返回函数，形成局部作用域<br>
 优点<br>
 局部作用域，防止变量污染</p>
-<pre><code>function A(){
-  var a = 0;
- return function(){
-   return a++
- }
+<pre><code class="language-js">function A(){
+    var a = 0;
+    return function(){
+        return a++
+    }
 }
 let B = A()
 console.log(B())
 </code></pre>
-<h2 id="4未完-待">4.未完 待</h2>
+<h2 id="4写一个判断设备来源的方法">4.写一个判断设备来源的方法</h2>
+<p>通过 navigator.userAgent 属性  搭配正则匹配来判断</p>
+<pre><code class="language-js">let ua = navigator.userAgent;
+  // 移动端
+  isMobile: (&quot;ontouchstart&quot; in window || navigator.msMaxTouchPoints) ? true : false,
+  // 微信
+  isWechat: /micromessenger/gi.test(ua),
+  // qq
+  isQQ: /qq/gi.test(ua),
+  // VV音乐
+  isvvmusic: /vvmusic/gi.test(ua),
+  // 安卓
+  isAndroid: /android/gi.test(ua),
+  // iOS
+  isIOS: /iphone|ipad|ipod|itouch/gi.test(ua), // IOS
+</code></pre>
+<h2 id="5说说bind-call-apply的区别">5.说说bind、call、apply的区别？</h2>
+<p>call和apply都是为了解决改变this的指向。作用都是相同的，只是传参的方式不同。<br>
+除了第一个参数外，call可以接收一个参数列表，apply只接受一个参数数组。 bind绑定完之后返回一个新的函数，不执行。</p>
+<pre><code class="language-js">// apply 立即执行
+People.apply(dog, [name, age]);
+People.apply(dog, arguments);
+
+// call 立即执行
+People.apply(dog, name, age);
+
+// bind 返回一个新的函数  不立即执行
+var Dog = People.apply(dog);
+Dog (name, age())
+</code></pre>
+<h2 id="6说说你对arguments的理解它是数组吗">6.说说你对arguments的理解，它是数组吗？</h2>
+<p>arguments 不是数组，是类数组，但是它有length属性以及可以以下标的形式取值<br>
+类数组 转 数组的方法有</p>
+<pre><code class="language-js">[...arguments]
+Array.from(arguments)
+Array.prototype.slice.call(arguments)
+</code></pre>
 ]]></content>
     </entry>
     <entry>
@@ -468,158 +682,6 @@ ie盒模型对width的解释是 width = content + padding +border<br>
 <p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">编译阶段会被移除，编译后没有任何代码</p>
 </blockquote>
 <pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">enum</span>&nbsp;Month&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;Jan,<br>&nbsp;&nbsp;&nbsp;&nbsp;Feb,<br>&nbsp;&nbsp;&nbsp;&nbsp;Mar<br>}<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;month&nbsp;=&nbsp;[Month.Jan,&nbsp;Month.Feb,&nbsp;Month.Mar]<br><br><span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;编译后</span><br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">var</span>&nbsp;month&nbsp;=&nbsp;[<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">0</span>&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">/*&nbsp;Jan&nbsp;*/</span>,&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span>&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">/*&nbsp;Feb&nbsp;*/</span>,&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">2</span>&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">/*&nbsp;Mar&nbsp;*/</span>];<br></code></pre>
-</section>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[TypeScript中的数据类型（一）]]></title>
-        <id>https://cmazxy.com/post/typescript-zhong-de-shu-ju-lei-xing-yi/</id>
-        <link href="https://cmazxy.com/post/typescript-zhong-de-shu-ju-lei-xing-yi/">
-        </link>
-        <updated>2020-04-27T06:05:41.000Z</updated>
-        <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
-<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">极客时间《TypeScript开发实战》学习笔记</p>
-</blockquote>
-<h2 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 22px;"><span class="prefix" style="display: none;"></span><span class="content">ES6中的6个基本数据类型和3个引用数据类型</span><span class="suffix"></span></h2>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">基本数据类型</span><span class="suffix" style="display: none;"></span></h4>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">Boolean</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">Number</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">String</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">undefined</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">null</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">Symbol</code></p>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">引用数据类型</span><span class="suffix" style="display: none;"></span></h4>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">Object</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">Array</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">Function</code></p>
-<h2 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 22px;"><span class="prefix" style="display: none;"></span><span class="content">TypeScript对ES6数据类型的扩展</span><span class="suffix"></span></h2>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">可以分为以下6种</span><span class="suffix" style="display: none;"></span></h4>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">void</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">any</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">never</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">元组</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">枚举</code>
-<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; color: #1e6bb8; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all;">高级类型</code></p>
-<h2 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 22px;"><span class="prefix" style="display: none;"></span><span class="content">TypeScript中数据类型的声明</span><span class="suffix"></span></h2>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">Boolean</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;bool:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">boolean</span>&nbsp;=&nbsp;<span class="hljs-literal" style="color: #aa0d91; line-height: 26px;">true</span><br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">Number</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;num:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>&nbsp;=&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span><br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">String</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;str:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">string</span>&nbsp;=&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'hello'</span><br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">Array</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;arr1:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>[]&nbsp;=&nbsp;[<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span>,&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">2</span>,&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">3</span>,&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span>];<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;arr2:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">Array</span>&lt;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">string</span>&gt;&nbsp;=&nbsp;[<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'1'</span>,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'2'</span>,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'4'</span>];<br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">Function</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;fun1&nbsp;=&nbsp;<span class="hljs-function" style="line-height: 26px;">(<span class="hljs-params" style="color: #5c2699; line-height: 26px;">x:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>,&nbsp;y:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span></span>)&nbsp;=&gt;</span>&nbsp;{&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;void&nbsp;无返回值</span><br>&nbsp;&nbsp;x&nbsp;+&nbsp;y;&nbsp;&nbsp;&nbsp;&nbsp;<br>}<br><br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;fun2&nbsp;=&nbsp;<span class="hljs-function" style="line-height: 26px;">(<span class="hljs-params" style="color: #5c2699; line-height: 26px;">x:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>,&nbsp;y:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span></span>)&nbsp;=&gt;</span>&nbsp;x&nbsp;+&nbsp;y;&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;返回number</span><br><br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;fun3:&nbsp;&nbsp;<span class="hljs-function" style="line-height: 26px;">(<span class="hljs-params" style="color: #5c2699; line-height: 26px;">x:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>,&nbsp;y:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span></span>)&nbsp;=&gt;</span>&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;返回number</span><br>fun3&nbsp;=&nbsp;<span class="hljs-function" style="line-height: 26px;">(<span class="hljs-params" style="color: #5c2699; line-height: 26px;">a,&nbsp;b</span>)&nbsp;=&gt;</span>&nbsp;a&nbsp;*&nbsp;b;<br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">Object</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;obj:&nbsp;{x:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>,&nbsp;y:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>}&nbsp;=&nbsp;{x:&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span>,&nbsp;y:&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">2</span>}<br>obj.x&nbsp;=&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">4</span>;<br><span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">console</span>.log(obj.x)&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">//4</span><br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">Symbol</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;s1:&nbsp;symbol&nbsp;=&nbsp;Symbol();<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;s2&nbsp;=&nbsp;Symbol();<br><span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">console</span>.log(s1&nbsp;===&nbsp;s2)&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">//false</span><br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">undefined &amp; null</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;undefined&nbsp;null&nbsp;&nbsp;&nbsp;只能等于自己&nbsp;且在开启严格模式的情况下&nbsp;不允许赋值给其他类型（虽然在js中默认undefined和unll是其他任何类型的子类型，但在ts中也不行）</span><br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;un:&nbsp;<span class="hljs-literal" style="color: #aa0d91; line-height: 26px;">undefined</span>&nbsp;=&nbsp;<span class="hljs-literal" style="color: #aa0d91; line-height: 26px;">undefined</span>;<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;nu:&nbsp;<span class="hljs-literal" style="color: #aa0d91; line-height: 26px;">null</span>&nbsp;=&nbsp;<span class="hljs-literal" style="color: #aa0d91; line-height: 26px;">null</span>;&nbsp;&nbsp;&nbsp;<br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">void</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;noReturn&nbsp;=&nbsp;<span class="hljs-function" style="line-height: 26px;"><span class="hljs-params" style="color: #5c2699; line-height: 26px;">()</span>&nbsp;=&gt;</span>&nbsp;{}&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;没有返回值的函数（隐式返回undefined）</span><br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">never</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;永远不会有返回值的函数（不能正常结束的函数）</span><br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;error&nbsp;=&nbsp;<span class="hljs-function" style="line-height: 26px;"><span class="hljs-params" style="color: #5c2699; line-height: 26px;">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">throw</span>&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">new</span>&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">Error</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'error'</span>);<br>}<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;endless&nbsp;=&nbsp;<span class="hljs-function" style="line-height: 26px;"><span class="hljs-params" style="color: #5c2699; line-height: 26px;">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">while</span>(<span class="hljs-literal" style="color: #aa0d91; line-height: 26px;">true</span>)&nbsp;{}<br>}<br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">any</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;兼容es6</span><br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;x;<br>x&nbsp;=&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span>;<br>x&nbsp;=&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"2"</span><br><br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;y:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">any</span>&nbsp;=&nbsp;<span class="hljs-literal" style="color: #aa0d91; line-height: 26px;">false</span>;<br>x&nbsp;=&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span>;<br>x&nbsp;=&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"2"</span><br></code></pre>
-<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content">联合类型</span><span class="suffix" style="display: none;"></span></h4>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">let</span>&nbsp;ns:&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">number</span>&nbsp;|&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">string</span>&nbsp;=&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span>;<br>ns&nbsp;=&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'2'</span>&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">//&nbsp;既可以是number也可以是string</span><br></code></pre>
-</section>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[webpack配置项中路径的问题]]></title>
-        <id>https://cmazxy.com/post/webpack-pei-zhi-xiang-zhong-lu-jing-de-wen-ti/</id>
-        <link href="https://cmazxy.com/post/webpack-pei-zhi-xiang-zhong-lu-jing-de-wen-ti/">
-        </link>
-        <updated>2020-04-27T06:04:16.000Z</updated>
-        <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.05); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px;">
-<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">极客时间《TypeScript开发实战》学习笔记</p>
-</blockquote>
-<h2 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 22px;"><span class="prefix" style="display: none;"></span><span class="content">webpack配置项路径</span><span class="suffix"></span></h2>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;">在配置文件中，文件的引入可以使用相对路径，这个没有问题。
-比如vue cli2中
-build/目录</p>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;"><img src="https://user-gold-cdn.xitu.io/2019/11/19/16e814ea5d23b962?w=274&amp;h=329&amp;f=png&amp;s=16753" alt style="display: block; margin: 0 auto; max-width: 100%;">
-/build/webpack.config.js中可以使用相对路径引入其他文件</p>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;merge&nbsp;=&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">require</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'webpack-merge'</span>)<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;baseConfig&nbsp;=&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">require</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./webpack.base.config'</span>)<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;devConfig&nbsp;=&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">require</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./webpack.dev.config'</span>)<br><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">const</span>&nbsp;proConfig&nbsp;=&nbsp;<span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">require</span>(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./webpack.pro.config'</span>)<br></code></pre>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;">但是配置项中就不能使用相对路径了，而要使用绝对路径。<br>
-因为相对的不是你期望的当前脚本所在目录，而是相对于你在哪个目录执行的webpack命令，就是cli里常说的current working directory。<br> 所以如果当你执行命令的目录和webpack.config.js在同一个目录时，没有任何问题。
-我们是通过npm或者yarn在项目根目录执行的命令（因为package.json在根目录）所以build目录中配置文件中配置项的路径是在项目根目录开始计算的，所以不能直接使用相对路径。要使用相对路径也要清楚是从根目录开始算的，而不是配置文件当前所在的目录。最好是使用绝对路径，使用nodejs的path模块可以轻松配置绝对路径</p>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;"><span class="hljs-built_in" style="color: #5c2699; line-height: 26px;">module</span>.exports&nbsp;=&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">entry</span>:&nbsp;path.join(__dirname,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./../src/app.ts'</span>),<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">output</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">filename</span>:&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'app.js'</span><br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">resolve</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">extensions</span>:&nbsp;[<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'.js'</span>,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'.ts'</span>,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'.tsx'</span>]<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">module</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">rules</span>:&nbsp;[<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">test</span>:&nbsp;<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/\.tsx?$/i</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">use</span>:&nbsp;[{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">loader</span>:&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'ts-loader'</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">exclude</span>:&nbsp;<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/node_modules/</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;]<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">plugins</span>:&nbsp;[<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">new</span>&nbsp;HtmlWebpackPlugin({<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">template</span>:&nbsp;path.join(__dirname,&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'./../public/index.html'</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;})<br>&nbsp;&nbsp;]<br>}<br></code></pre>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;">path.join()是在当前使用它的文件的绝对路径上和第二个参数的相对路径拼在一起形成一个绝对路径</p>
-</section>]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[gitlab-runner的安装与注册]]></title>
-        <id>https://cmazxy.com/post/12/</id>
-        <link href="https://cmazxy.com/post/12/">
-        </link>
-        <updated>2020-04-26T02:34:36.000Z</updated>
-        <content type="html"><![CDATA[<section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center; letter-spacing: 2px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left-color: rgb(239, 112, 96); background: #fff9f9;">
-<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">注：此文照搬官方文档,英语还行的可以移步官网</p>
-</blockquote>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;"><a href="https://docs.gitlab.com/runner/install/linux-manually.html" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: rgb(239, 112, 96); border-bottom: 1px solid rgb(239, 112, 96);">官方文档-安装</a></p>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;"><a href="https://docs.gitlab.com/runner/register/index.html" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: rgb(239, 112, 96); border-bottom: 1px solid rgb(239, 112, 96);">官方文档-注册</a></p>
-<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black;"><a href="https://docs.gitlab.com/runner/commands" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: rgb(239, 112, 96); border-bottom: 1px solid rgb(239, 112, 96);">官方文档-命令</a></p>
-<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;"><span class="prefix" style="display: none;"></span><span class="content">安装</span><span class="suffix" style="display: none;"></span></h3>
-<ol data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">只需下载系统的其中一个二进制文件即可</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;#&nbsp;Linux&nbsp;x86<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">-64</span><br>&nbsp;&nbsp;wget&nbsp;-O&nbsp;/usr/local/bin/gitlab-runner&nbsp;https:<span class="hljs-comment" style="color: #007400; line-height: 26px;">//gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64</span><br><br>&nbsp;#&nbsp;Linux&nbsp;x86<br>&nbsp;&nbsp;wget&nbsp;-O&nbsp;/usr/local/bin/gitlab-runner&nbsp;https:<span class="hljs-comment" style="color: #007400; line-height: 26px;">//gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-386</span><br><br>&nbsp;#&nbsp;Linux&nbsp;arm<br>&nbsp;&nbsp;wget&nbsp;-O&nbsp;/usr/local/bin/gitlab-runner&nbsp;https:<span class="hljs-comment" style="color: #007400; line-height: 26px;">//gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-arm</span><br></code></pre>
-<ol start="2" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">赋予执行权限</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;chmod&nbsp;+x&nbsp;/usr/local/bin/gitlab-runner<br></code></pre>
-<ol start="3" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">（可选）如果要使用Docker，请使用以下命令安装Docker：(这里不做选择，可以先跳过，我在用docker时遇到了一点问题)</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;curl&nbsp;-sSL&nbsp;https:<span class="hljs-comment" style="color: #007400; line-height: 26px;">//get.docker.com/&nbsp;|&nbsp;sh</span><br></code></pre>
-<ol start="4" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">创建GitLab CI用户：</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;useradd&nbsp;--comment&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">'GitLab&nbsp;Runner'</span>&nbsp;--create-home&nbsp;gitlab-runner&nbsp;--shell&nbsp;/bin/bash<br></code></pre>
-<ol start="5" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">安装并作为服务运行：</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;gitlab-runner&nbsp;install&nbsp;--user=gitlab-runner&nbsp;--working-directory=<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/home/gi</span>tlab-runner<br>&nbsp;gitlab-runner&nbsp;start<br></code></pre>
-<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;"><span class="prefix" style="display: none;"></span><span class="content">注册</span><span class="suffix" style="display: none;"></span></h3>
-<ol data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">运行以下命令：</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;gitlab-runner&nbsp;register<br></code></pre>
-<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://user-gold-cdn.xitu.io/2019/6/4/16b21484cd56f4eb?w=1628&amp;h=771&amp;f=png&amp;s=109524" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
-<ol start="2" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">输入您的GitLab实例URL：</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;Please&nbsp;enter&nbsp;the&nbsp;gitlab-ci&nbsp;coordinator&nbsp;URL&nbsp;(e.g.&nbsp;https:<span class="hljs-comment" style="color: #007400; line-height: 26px;">//gitlab.com&nbsp;)</span><br>&nbsp;https:<span class="hljs-comment" style="color: #007400; line-height: 26px;">//gitlab.com</span><br></code></pre>
-<ol start="3" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">输入您获得的令牌以注册Runner：</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;Please&nbsp;enter&nbsp;the&nbsp;gitlab-ci&nbsp;token&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">for</span>&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">this</span>&nbsp;runner<br>&nbsp;xxx<br></code></pre>
-<ol start="4" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">输入Runner的描述，您可以稍后在GitLab的UI中更改：</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;Please&nbsp;enter&nbsp;the&nbsp;gitlab-ci&nbsp;description&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">for</span>&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">this</span>&nbsp;runner<br>&nbsp;[hostame]&nbsp;my-runner<br></code></pre>
-<ol start="5" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">输入与Runner关联的标签，您可以稍后在GitLab的UI中更改：</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;Please&nbsp;enter&nbsp;the&nbsp;gitlab-ci&nbsp;tags&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">for</span>&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">this</span>&nbsp;runner&nbsp;(comma&nbsp;separated):<br>&nbsp;my-tag,another-tag<br></code></pre>
-<ol start="6" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">输入Runner执行程序：(我们刚才没使用官方推荐的Docker，所以这里选择shell就可以了）</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;Please&nbsp;enter&nbsp;the&nbsp;executor:&nbsp;ssh,&nbsp;docker+machine,&nbsp;docker-ssh+machine,&nbsp;kubernetes,&nbsp;docker,&nbsp;parallels,&nbsp;virtualbox,&nbsp;docker-ssh,&nbsp;<span class="hljs-attr" style="color: #836C28; line-height: 26px;">shell</span>:<br>&nbsp;shell<br></code></pre>
-<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left-color: rgb(239, 112, 96); background: #fff9f9;">
-<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">走到这里，其实runner已经注册完成了，这个时候可以去gitlab的设置里选择CI/CD就可以看到刚注册的这个runner了</p>
-</blockquote>
-<ol start="7" data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
-<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">如果您选择Docker作为执行程序，则会要求您将默认图像用于未在.gitlab-ci.yml中定义的项目：</section></li></ol>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;Please&nbsp;enter&nbsp;the&nbsp;Docker&nbsp;image&nbsp;(eg.&nbsp;ruby:<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">2.1</span>):<br>&nbsp;alpine:latest<br></code></pre>
-<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px;"><span class="prefix" style="display: none;"></span><span class="content">遇到的问题及其解决方法</span><span class="suffix" style="display: none;"></span></h3>
-<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left-color: rgb(239, 112, 96); background: #fff9f9;">
-<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">后边我要通过ci/cd把打好的包放在/www目录下的，但是ci/cd运行时可能会报cp: cannot create directory ‘/www/xxx/xxx’: Permission denied，这是因为ci/cd运行时的用户是gitlab-runner，而/www目录是属于root用户的，所以我们要把/www目录的权限交给gitlab-runner</p>
-</blockquote>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">chown&nbsp;-hR&nbsp;gitlab-runner:gitlab-runner&nbsp;/www<br></code></pre>
-<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left-color: rgb(239, 112, 96); background: #fff9f9;">
-<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">如果CI/CD一直处于pending状态的话，需要上服务器去重启一下</p>
-</blockquote>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">gitlab-runner&nbsp;restast<br></code></pre>
-<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left-color: rgb(239, 112, 96); background: #fff9f9;">
-<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">如果遇到其他权限问题解决不了，可以尝试修改GitLab Runner的权限跟root保持一致</p>
-</blockquote>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">vim&nbsp;/etc/passwd<br></code></pre>
-<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; border-left: 3px solid rgba(0, 0, 0, 0.4); color: #6a737d; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left-color: rgb(239, 112, 96); background: #fff9f9;">
-<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0px; color: black; line-height: 26px;">打开passwd文件后找到gitlab-runner用户，将</p>
-</blockquote>
-<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #fff; border-radius: 5px;">#修改前<br>gitlab-runner:x:<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">601</span>:<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">601</span>:GitLabRunner:<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/home/gi</span>tlab-runner:<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/bin/</span>bash&nbsp;权限组修改为跟root的一致<br>#修改后<br>gitlab-runner:x:<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">0</span>:<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">0</span>:GitLabRunner:<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/home/gi</span>tlab-runner:<span class="hljs-regexp" style="color: #0E0EFF; line-height: 26px;">/bin/</span>bash。(root的权限组名为<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">0</span>)<br></code></pre>
 </section>]]></content>
     </entry>
 </feed>

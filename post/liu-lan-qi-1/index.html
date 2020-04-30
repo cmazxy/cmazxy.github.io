@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | Cmaz</title>
+<title>浏览器-1 | Cmaz</title>
 <meta name="referrer" content="no-referrer"/>
 <meta name="description" content="学如不及，犹恐失之。">
 
@@ -99,14 +99,48 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于</h2>
-            <div class="post-date">2019-12-13</div>
+            <h2 class="post-title">浏览器-1</h2>
+            <div class="post-date">2020-04-30</div>
             
             <div class="post-content">
-              <p>真正为学的人，是永远走在路上，不知满足的人。当他们走了一段路程，看到很多的风景时，他们也不会满足。因为他们明白，自己所走过的这段距离，只不过刚刚起步而已，前方还有更长的路在等着他呢。而且，真正为学的人，对于那些用自己的努力所换来的学问，也是倍加珍惜，还时常加以温习，唯恐自己得而复失。</p>
+              <h2 id="1来说说你对重绘和重排的理解以及如何优化">1.来说说你对重绘和重排的理解，以及如何优化？</h2>
+<h3 id="重绘">重绘</h3>
+<p>重绘(repaint)：当元素样式的改变不影响布局时，浏览器将使用重绘对元素进行更新，此时由于只需要 UI 层面的重新像素绘制，因此损耗较少。<br>
+常见的重绘操作有：</p>
+<ol>
+<li>改变元素颜色</li>
+<li>改变元素背景色</li>
+</ol>
+<h3 id="回流重排">回流(重排)</h3>
+<p>回流(reflow)：又叫重排（layout）。当元素的尺寸、结构或者触发某些属性时，浏览器会重新渲染页面，称为回流。此时，浏览器需要重新经过计算，计算后还需要重新页面布局，因此是较重的操作。<br>
+常见的回流操作有：</p>
+<ol>
+<li>页面初次渲染</li>
+<li>浏览器窗口大小改变</li>
+<li>元素尺寸/位置/内容发生改变</li>
+<li>元素字体大小变化</li>
+<li>添加或者删除可见的 DOM 元素</li>
+<li>激活 CSS 伪类（:hover……）<br>
+<strong>重拍必定会触发重绘，重绘不一定会触发重排。重绘的开销较小，重排的代价较高。</strong><br>
+那么，在工作中我们要如何避免大量使用重绘与回流呢？：</li>
+<li>避免频繁操作样式，可汇总后统一一次修改</li>
+<li>尽量使用 class 进行样式修改，而不是直接操作样式</li>
+<li>减少 DOM 的操作，可使用字符串一次性插入</li>
+</ol>
+<h2 id="2从浏览器输入-url-到渲染成功的过程中究竟发生了什么">2.从浏览器输入 URL 到渲染成功的过程中，究竟发生了什么？</h2>
+<figure data-type="image" tabindex="1"><img src="https://user-gold-cdn.xitu.io/2019/3/12/169721e312f11eea?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" loading="lazy"></figure>
 
             </div>
             
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://cmazxy.com/post/wang-luo-tong-xin-1-wei-wan-dai/">
+                  <h3 class="post-title">
+                    网络通信-1
+                  </h3>
+                </a>
+              </div>
             
 
             
