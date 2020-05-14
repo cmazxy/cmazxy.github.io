@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1588241487979">
+<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1589467771216">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://cmazxy.com/styles/main.css">
 
@@ -37,7 +37,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://cmazxy.com">
-        <img src="https://cmazxy.com/images/avatar.png?v=1588241487979" class="site-logo">
+        <img src="https://cmazxy.com/images/avatar.png?v=1589467771216" class="site-logo">
         <h1 class="site-title">Cmaz</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -187,9 +187,10 @@ console.log('启动服务，监听 localhost:3000');
 <h3 id="cors">CORS</h3>
 <p>CORS 是一个 W3C 标准，全称是&quot;跨域资源共享&quot;（Cross-origin resource sharing）它允许浏览器向跨源服务器，发出 XMLHttpRequest 请求，从而克服了 ajax 只能同源使用的限制。</p>
 <p>CORS 需要浏览器和服务器同时支持才可以生效，对于开发者来说，CORS 通信与同源的 ajax 通信没有差别，代码完全一样。浏览器一旦发现 ajax 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。</p>
-<p>因此，实现 CORS 通信的关键是服务器。只要服务器实现了 CORS 接口，就可以跨源通信。</p>
-<p>后端要在响应头设置：</p>
+<p>实际上, 浏览器不会拦截不合法的跨域请求, 而是拦截了他们的响应, 因此即使请求不合法, 很多时候, 服务器依然收到了请求，因此，实现 CORS 通信的关键是服务器。只要服务器实现了 CORS 接口，就可以跨源通信。</p>
+<p>实现方法是后端要在响应头里设置：</p>
 <pre><code class="language-js">Access-Control-Allow-Origin: *
+// * 代表所有域名  也可以是具体的域名  比如https://www.abc.com
 </code></pre>
 <h3 id="server-proxy">Server Proxy</h3>
 <p>服务器代理，顾名思义，当你需要有跨域的请求操作时发送请求给后端，让后端帮你代为请求，然后最后将获取的结果发送给你。因为后端没有同源策略这个狗东西的嘛</p>

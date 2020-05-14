@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1588241487979">
+<link rel="shortcut icon" href="https://cmazxy.com/favicon.ico?v=1589467771216">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://cmazxy.com/styles/main.css">
 
@@ -37,7 +37,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://cmazxy.com">
-        <img src="https://cmazxy.com/images/avatar.png?v=1588241487979" class="site-logo">
+        <img src="https://cmazxy.com/images/avatar.png?v=1589467771216" class="site-logo">
         <h1 class="site-title">Cmaz</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -129,6 +129,13 @@
 </ol>
 <h2 id="2从浏览器输入-url-到渲染成功的过程中究竟发生了什么">2.从浏览器输入 URL 到渲染成功的过程中，究竟发生了什么？</h2>
 <figure data-type="image" tabindex="1"><img src="https://user-gold-cdn.xitu.io/2019/3/12/169721e312f11eea?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="" loading="lazy"></figure>
+<h2 id="3-dom和bom有什么区别">3. DOM和BOM有什么区别？</h2>
+<p>DOM 是 Document Object Model 的缩写。即文档对象模型，遵循 W3C 制定的标准。其本质就是 DOM 元素。<br>
+我们最早使用的 document.getElementById 获取到的对象就是 DOM 对象。利用 JS 操作某个 DOM 的颜色、形状、大小都是对 DOM 元素的操作。<br>
+在代码上可以理解为 document 开头的方法和属性。</p>
+<p>BOM 是 Browser Object Model 的缩写。即浏览器对象模型，这并没有一套规定标准，每个浏览器都有自己的实现。但事实上在大部分主要的功能上都已经形成默契。<br>
+BOM 主要操作浏览器的行为，比如 navigator,location,history,storage 都为 BOM 的操作。其根对象是 window，可以理解为 winodw 开头的方法。</p>
+<p>DOM 和 BOM 的关系就是，DOM 在 BOM 之内。</p>
 
             </div>
             
